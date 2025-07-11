@@ -28,13 +28,20 @@ class AppRoot extends LitElement {
         component: "employee-form",
         action: async () => await import("./pages/employee-form.js"),
       },
-      { path: "/edit/:id", component: "employee-form" },
+      {
+        path: "/edit/:id",
+        component: "employee-form",
+        action: async () => await import("./pages/employee-form.js"),
+      },
       { path: "(.*)", redirect: "/" },
     ]);
   }
 
   render() {
-    return html`<div id="outlet"></div>`;
+    return html`<header>
+        <nav><a @click=${() => Router.go("/add")}>HOME</a></nav>
+      </header>
+      <div id="outlet"></div>`;
   }
 }
 
