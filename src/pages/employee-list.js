@@ -23,11 +23,15 @@ class EmployeeList extends LitElement {
 
   static properties = {
     employees: { type: Array },
+    filteredEmployees: { type: Array },
     mode: { type: String },
+    searchQuery: { type: String },
   };
 
   constructor() {
     super();
+    this.filteredEmployees = [];
+    this.searchQuery = "";
     this.mode = "list";
     this.employees = [
       {
@@ -99,23 +103,50 @@ class EmployeeList extends LitElement {
     ];
   }
 
-  _toggleMode(param) {
+  toggleMode(param) {
     this.mode = param;
   }
 
+  updateSearch(e) {
+    this.searchQuery = e.target.value.toLowerCase();
+    if (this.searchQuery)
+      this.filteredEmployees = this.employees.filter((employee) =>
+        ["firstName", "lastName", "department", "position"].some(
+          (field) =>
+            employee[field] &&
+            employee[field].toLowerCase().includes(this.searchQuery)
+        )
+      );
+
+    this.requestUpdate();
+  }
+
   render() {
+    const employeesToShow = this.searchQuery
+      ? this.filteredEmployees
+      : this.employees;
+
     return html`
       <section>
         <h2>Employee List</h2>
+        <div class="search-container">
+          <input
+            class="search-input"
+            type="text"
+            .value=${this.searchQuery}
+            @input=${this.updateSearch}
+            placeholder="Search by name, department, or position..."
+          />
+        </div>
         <div id="button-wrapper">
-          <button @click=${() => this._toggleMode("table")}>Table</button>
-          <button @click=${() => this._toggleMode("list")}>List</button>
+          <button @click=${() => this.toggleMode("table")}>Table</button>
+          <button @click=${() => this.toggleMode("list")}>List</button>
         </div>
       </section>
       <div>
         ${this.mode === "table"
-          ? html`<table-view .employees=${this.employees}></table-view>`
-          : html`<list-view .employees=${this.employees}></list-view>`}
+          ? html`<table-view .employees=${employeesToShow}></table-view>`
+          : html`<list-view .employees=${employeesToShow}></list-view>`}
       </div>
     `;
   }
