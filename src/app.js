@@ -6,14 +6,6 @@ class AppRoot extends LitElement {
     employees: { type: Array },
   };
 
-  constructor() {
-    super();
-    this.employees = [
-      { id: 1, name: "Tahsin Yazkan", role: "Developer" },
-      { id: 2, name: "Sezin Yazkan", role: "Designer" },
-    ];
-  }
-
   firstUpdated() {
     const outlet = this.shadowRoot.getElementById("outlet");
     const router = new Router(outlet);

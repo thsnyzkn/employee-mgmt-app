@@ -1,5 +1,7 @@
 import { html, LitElement, css } from "lit";
 import { Router } from "@vaadin/router";
+import "../components/table-view";
+import "../components/list-view";
 
 class EmployeeList extends LitElement {
   static styles = css`
@@ -25,10 +27,12 @@ class EmployeeList extends LitElement {
 
   static properties = {
     employees: { type: Array },
+    mode: { type: String },
   };
 
   constructor() {
     super();
+    this.mode = "table";
     this.employees = [
       {
         id: 1,
@@ -55,46 +59,22 @@ class EmployeeList extends LitElement {
     ];
   }
 
+  _toggleMode(param) {
+    this.mode = param;
+  }
+
   render() {
-    return html` <table>
-      <thead>
-        <tr>
-          <th>First Name</th>
-          <th>Last Name</th>
-          <th>Date of Employment</th>
-          <th>Date of Birth</th>
-          <th>Phone</th>
-          <th>Email</th>
-          <th>Department</th>
-          <th>Position</th>
-          <th>Actions</th>
-        </tr>
-      </thead>
-      <tbody>
-        ${this.employees.map(
-          (employee) => html`
-            <tr>
-              <td>${employee.firstName}</td
-              <td>${employee.lastName}</td>
-              <td>${employee.dateOfEmployment}</td>
-              <td>${employee.dateOfBirth}</td>
-              <td>${employee.phone}</td>
-              <td>${employee.email}</td>
-              <td>${employee.department}</td>
-              <td>${employee.position}</td>
-              <td>
-                <button @click=${() => Router.go(`/edit/${employee.id}`)}>
-                  Edit
-                </button>
-                <button @click=${() => this.deleteEmployee(employee.id)}>
-                  Delete
-                </button>
-              </td>
-            </tr>
-          `
-        )}
-      </tbody>
-    </table>`;
+    return html`
+      <div>
+        <h2>Employee List</h2>
+        <button @click=${() => this._toggleMode("table")}>Table</button>
+        <button @click=${() => this._toggleMode("list")}>List</button>
+      </div>
+      <button @click=${() => Router.go("/add")}>Add Employee</button>
+      ${this.mode === "table"
+        ? html`<table-view .employees=${this.employees}></table-view>`
+        : html`<list-view .employees=${this.employees}></list-view>`}
+    `;
   }
 }
 
