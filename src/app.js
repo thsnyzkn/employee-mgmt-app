@@ -1,10 +1,44 @@
-import { LitElement, html } from "lit";
+import { LitElement, html, css } from "lit";
 import { Router } from "@vaadin/router";
-
+import logo from "./assets/logo.svg";
+import tr from "./assets/tr.svg";
 class AppRoot extends LitElement {
   static properties = {
     employees: { type: Array },
   };
+
+  static styles = css`
+    .page-container {
+      @media (min-width: 768px) {
+        max-width: 1200px;
+      }
+      margin: 0 auto;
+    }
+    header {
+      display: flex;
+      justify-content: space-between;
+      background-color: white;
+      a {
+        text-decoration: none;
+        color: #ff6200;
+        display: flex;
+        align-items: center;
+      }
+      div {
+        display: flex;
+        justify-content: space-between;
+        gap: 8px;
+      }
+    }
+
+    button {
+      all: unset;
+      outline: revert;
+      margin-right: 4px;
+      padding: 4px 8px;
+      cursor: pointer;
+    }
+  `;
 
   firstUpdated() {
     const outlet = this.shadowRoot.getElementById("outlet");
@@ -30,10 +64,29 @@ class AppRoot extends LitElement {
   }
 
   render() {
-    return html`<header>
-        <nav><a @click=${() => Router.go("/add")}>HOME</a></nav>
+    return html`
+      <header role="banner">
+        <a href="/"
+          ><img src=${logo} height="40px" width="40px" alt="Ing Logo" /> Ing</a
+        >
+        <div>
+          <a href="/">Employees</a>
+          <a href="/add">Add Employee</a>
+
+          <button @click=${this.changeLanguage}>
+            <img
+              src=${tr}
+              height="40px"
+              width="40px"
+              alt="Turkish Language Selector"
+            />
+          </button>
+        </div>
       </header>
-      <div id="outlet"></div>`;
+      <div class="page-container">
+        <div id="outlet"></div>
+      </div>
+    `;
   }
 }
 

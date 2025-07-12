@@ -13,11 +13,22 @@
   -moz-osx-font-smoothing: grayscale;
 }
 
+
 body {
   margin: 0;
-  display: flex;
-  justify-content: center;
+  background-color: #f4f6f8; /* Light gray background for both pages */
+  font-family: Arial, sans-serif;
+  color: #333;
   min-height: 100vh;
+  overflow-y: scroll;
+}
+
+.page-container {
+  @media (min-width: 768px)  {
+    max-width: 1200px;
+  }
+  margin: 0 auto;
+  padding: 16px;
 }
 
 @media (prefers-color-scheme: light) {

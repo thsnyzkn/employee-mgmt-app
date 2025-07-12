@@ -8,62 +8,84 @@ class ListView extends LitElement {
   };
   static styles = css`
     ol {
-      display: flex;
-      gap: 1rem;
+      display: grid;
+      grid-template-columns: repeat(2, minmax(480px, 1fr));
+      justify-content: space-between;
+      gap: 16px;
       padding: 0;
+      margin: 0;
       list-style: none;
+      margin: 0 auto;
     }
     li {
-      border: 1px solid red;
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      justify-content: space-between;
+      gap: 24px;
+      padding: 16px;
+      background-color: white;
+      border-radius: 8px;
+      box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+      transition: box-shadow 0.2s, transform 0.2s;
+    }
+    li:hover {
+      box-shadow: 0 8px 16px -2px rgba(0, 0, 0, 0.15);
+      transform: translateY(-4px) scale(1.02);
+    }
+    li > *:nth-child(2n) {
+      justify-self: flex;
+      text-align: left;
     }
   `;
+
+  getEmployeeValue(employee, propertyType) {
+    switch (propertyType) {
+      case "First Name":
+        return employee.firstName;
+      case "Last Name":
+        return employee.lastName;
+      case "Date of Employment":
+        return employee.dateOfEmployment;
+      case "Date of Birth":
+        return employee.dateOfBirth;
+      case "Phone":
+        return employee.phone;
+      case "Email":
+        return employee.email;
+      case "Department":
+        return employee.department;
+      case "Position":
+        return employee.position;
+      case "Actions":
+        return html`<div>
+          <button>Edit</button>
+          <button>Delete</button>
+        </div>`;
+
+      default:
+        return "N/A";
+    }
+  }
   render() {
-    let index = 0;
     return html`
       <ol>
-          ${this.employees?.map(
-            (employee) => html`
-              <li>
-                <card-property
-                  .title=${employee.firstName}
-                  .label=${propertyTypes[index++]}
-                ></card-property>
-                <card-property
-                  .title=${employee.lastName}
-                  .label=${propertyTypes[index++]}
-                ></card-property>
-                <card-property
-                  .title=${employee.dateOfEmployment}
-                  .label=${propertyTypes[index++]}
-                ></card-property>
-                <card-property
-                  .title=${employee.dateOfBirth}
-                  .label=${propertyTypes[index++]}
-                ></card-property>
-                <card-property
-                  .title=${employee.phone}
-                  .label=${propertyTypes[index++]}
-                ></card-property>
-                <card-property
-                  .title=${employee.email}
-                  .label=${propertyTypes[index++]}
-                ></card-property>
-                <card-property
-                  .title=${employee.department}
-                  .label=${propertyTypes[index++]}
-                ></card-property>
-                <card-property
-                  .title=${employee.position}
-                  .label=${propertyTypes[index++]}
-                ></card-property>
-              </li>
-            `
-          )}
-        </li>
+        ${this.employees?.map(
+          (employee) => html`
+            <li>
+              ${propertyTypes.map(
+                (property) => html`
+                  <card-property
+                    .title=${this.getEmployeeValue(employee, property)}
+                    .label=${property}
+                  ></card-property>
+                `
+              )}
+            </li>
+          `
+        )}
       </ol>
     `;
   }
-  index = 0;
 }
 
 customElements.define("list-view", ListView);

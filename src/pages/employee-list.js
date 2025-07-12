@@ -5,23 +5,19 @@ import "../components/list-view";
 
 class EmployeeList extends LitElement {
   static styles = css`
-    table {
-      width: 100%;
-      border-collapse: collapse;
-    }
-    th,
-    td {
-      border: 1px solid #ddd;
-      padding: 8px;
-      text-align: left;
-    }
-    th {
-      background-color: #f2f2f2;
+    section {
+      margin: 0;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
     }
     button {
-      margin-right: 5px;
-      padding: 5px 10px;
+      padding: 4px 8px;
       cursor: pointer;
+    }
+    #button-wrapper {
+      padding: 0;
+      margin: 0;
     }
   `;
 
@@ -32,11 +28,55 @@ class EmployeeList extends LitElement {
 
   constructor() {
     super();
-    this.mode = "table";
+    this.mode = "list";
     this.employees = [
       {
         id: 1,
         firstName: "Tahsin",
+        lastName: "Yazkan",
+        dateOfEmployment: "23/09/2022",
+        dateOfBirth: "02/02/1991",
+        phone: "+905354641232",
+        email: "sezin@gmail.com",
+        department: "Development",
+        position: "Designer",
+      },
+      {
+        id: 2,
+        firstName: "Sezin",
+        lastName: "Yazkan",
+        dateOfEmployment: "23/09/2022",
+        dateOfBirth: "02/02/1991",
+        phone: "+905354641232",
+        email: "sezin@gmail.com",
+        department: "Development",
+        position: "Designer",
+      },
+      {
+        id: 2,
+        firstName: "Sezin",
+        lastName: "Yazkan",
+        dateOfEmployment: "23/09/2022",
+        dateOfBirth: "02/02/1991",
+        phone: "+905354641232",
+        email: "sezin@gmail.com",
+        department: "Development",
+        position: "Designer",
+      },
+      {
+        id: 2,
+        firstName: "Sezin",
+        lastName: "Yazkan",
+        dateOfEmployment: "23/09/2022",
+        dateOfBirth: "02/02/1991",
+        phone: "+905354641232",
+        email: "sezin@gmail.com",
+        department: "Development",
+        position: "Designer",
+      },
+      {
+        id: 2,
+        firstName: "Sezin",
         lastName: "Yazkan",
         dateOfEmployment: "23/09/2022",
         dateOfBirth: "02/02/1991",
@@ -65,15 +105,18 @@ class EmployeeList extends LitElement {
 
   render() {
     return html`
-      <div>
+      <section>
         <h2>Employee List</h2>
-        <button @click=${() => this._toggleMode("table")}>Table</button>
-        <button @click=${() => this._toggleMode("list")}>List</button>
+        <div id="button-wrapper">
+          <button @click=${() => this._toggleMode("table")}>Table</button>
+          <button @click=${() => this._toggleMode("list")}>List</button>
+        </div>
+      </section>
+      <div>
+        ${this.mode === "table"
+          ? html`<table-view .employees=${this.employees}></table-view>`
+          : html`<list-view .employees=${this.employees}></list-view>`}
       </div>
-      <button @click=${() => Router.go("/add")}>Add Employee</button>
-      ${this.mode === "table"
-        ? html`<table-view .employees=${this.employees}></table-view>`
-        : html`<list-view .employees=${this.employees}></list-view>`}
     `;
   }
 }
