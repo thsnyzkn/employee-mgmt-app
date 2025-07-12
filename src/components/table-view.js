@@ -65,6 +65,16 @@ class TableView extends LitElement {
     );
   }
 
+  deleteEmployee(employeeId) {
+    this.dispatchEvent(
+      new CustomEvent("delete-employee", {
+        detail: { id: employeeId },
+        bubbles: true,
+        composed: true,
+      })
+    );
+  }
+
   render() {
     const areAllSelected =
       this.employees.length > 0 &&

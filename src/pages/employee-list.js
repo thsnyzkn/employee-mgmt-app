@@ -1,7 +1,8 @@
 import { html, LitElement, css } from "lit";
-import { store, deleteSelectedEmployees } from "../store";
+import { store, deleteSelectedEmployees, deleteEmployee } from "../store";
 import "../components/table-view";
 import "../components/list-view";
+import "../components/confirm-modal.js";
 
 class EmployeeList extends LitElement {
   static styles = css`
@@ -23,11 +24,14 @@ class EmployeeList extends LitElement {
 
   static properties = {
     employees: { type: Array },
-    filteredEmployees: { type: Array },
     mode: { type: String },
     searchQuery: { type: String },
     currentPage: { type: Number },
     pageSize: { type: Number },
+    isModalVisible: { type: Boolean },
+    modalMessage: { type: String },
+    confirmAction: { type: Object }, // Function is an object type
+    selectedEmployeeIds: { type: Array },
   };
 
   constructor() {
@@ -36,42 +40,41 @@ class EmployeeList extends LitElement {
     this.searchQuery = "";
     this.mode = "list";
     this.employees = store.getState().employees;
-    this.filteredEmployees = [...this.employees];
     this.currentPage = 1;
     this.pageSize = 4;
     this.selectedEmployeeIds = [];
+    this.isModalVisible = false;
+    this.modalMessage = "";
+    this.confirmAction = () => {};
   }
 
   handleSelectionChanged(e) {
     this.selectedEmployeeIds = e.detail.selectedIds;
-    this.requestUpdate();
   }
 
   deleteSelected() {
-    store.dispatch(deleteSelectedEmployees(this.selectedEmployeeIds));
-    this.selectedEmployeeIds = [];
+    this.modalMessage = "Are you sure you want to delete the selected employees?";
+    this.confirmAction = () => {
+      store.dispatch(deleteSelectedEmployees(this.selectedEmployeeIds));
+      this.selectedEmployeeIds = [];
+      this.isModalVisible = false;
+    };
+    this.isModalVisible = true;
   }
 
-  _applyFilter() {
-    if (this.searchQuery) {
-      this.filteredEmployees = this.employees.filter((employee) =>
-        ["firstName", "lastName", "department", "position"].some(
-          (field) =>
-            employee[field] &&
-            employee[field].toLowerCase().includes(this.searchQuery)
-        )
-      );
-    } else {
-      this.filteredEmployees = [...this.employees];
-    }
+  deleteSingleEmployee(employeeId) {
+    this.modalMessage = "Are you sure you want to delete this employee?";
+    this.confirmAction = () => {
+      store.dispatch(deleteEmployee(employeeId));
+      this.isModalVisible = false;
+    };
+    this.isModalVisible = true;
   }
 
   connectedCallback() {
     super.connectedCallback();
     this.unsubscribe = store.subscribe(() => {
       this.employees = store.getState().employees;
-      this._applyFilter();
-      this.requestUpdate();
     });
   }
 
@@ -88,12 +91,26 @@ class EmployeeList extends LitElement {
 
   updateSearch(e) {
     this.searchQuery = e.target.value.toLowerCase();
-    this._applyFilter();
-    this.requestUpdate();
   }
+
+  get filteredEmployees() {
+    if (this.searchQuery) {
+      return this.employees.filter((employee) =>
+        ["firstName", "lastName", "department", "position"].some(
+          (field) =>
+            employee[field] &&
+            employee[field].toLowerCase().includes(this.searchQuery)
+        )
+      );
+    } else {
+      return this.employees;
+    }
+  }
+
   get totalPages() {
     return Math.ceil(this.filteredEmployees.length / this.pageSize);
   }
+
   goToPage(page) {
     if (page >= 1 && page <= this.totalPages) {
       this.currentPage = page;
@@ -112,6 +129,15 @@ class EmployeeList extends LitElement {
       : this.employees;
 
     return html`
+      ${this.isModalVisible
+        ? html`
+            <confirm-modal
+              .message=${this.modalMessage}
+              .onConfirm=${this.confirmAction}
+              .onCancel=${() => (this.isModalVisible = false)}
+            ></confirm-modal>
+          `
+        : ""}
       <section>
         <h2>Employee List</h2>
         <div class="search-container">
@@ -139,6 +165,7 @@ class EmployeeList extends LitElement {
           ? html`<table-view
               .employees=${this.paginatedEmployees}
               @selection-changed=${this.handleSelectionChanged}
+              @delete-employee=${(e) => this.deleteSingleEmployee(e.detail.id)}
             ></table-view>`
           : html`<list-view .employees=${this.paginatedEmployees}></list-view>`}
       </div>
