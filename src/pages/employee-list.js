@@ -1,5 +1,5 @@
 import { html, LitElement, css } from "lit";
-import { Router } from "@vaadin/router";
+import { store } from "../store";
 import "../components/table-view";
 import "../components/list-view";
 
@@ -26,85 +26,39 @@ class EmployeeList extends LitElement {
     filteredEmployees: { type: Array },
     mode: { type: String },
     searchQuery: { type: String },
+    currentPage: { type: Number },
+    pageSize: { type: Number },
   };
 
   constructor() {
     super();
-    this.filteredEmployees = [];
+    this.unsubscribe = null;
     this.searchQuery = "";
     this.mode = "list";
-    this.employees = [
-      {
-        id: 1,
-        firstName: "Tahsin",
-        lastName: "Yazkan",
-        dateOfEmployment: "23/09/2022",
-        dateOfBirth: "02/02/1991",
-        phone: "+905354641232",
-        email: "sezin@gmail.com",
-        department: "Development",
-        position: "Designer",
-      },
-      {
-        id: 2,
-        firstName: "Sezin",
-        lastName: "Yazkan",
-        dateOfEmployment: "23/09/2022",
-        dateOfBirth: "02/02/1991",
-        phone: "+905354641232",
-        email: "sezin@gmail.com",
-        department: "Development",
-        position: "Designer",
-      },
-      {
-        id: 2,
-        firstName: "Sezin",
-        lastName: "Yazkan",
-        dateOfEmployment: "23/09/2022",
-        dateOfBirth: "02/02/1991",
-        phone: "+905354641232",
-        email: "sezin@gmail.com",
-        department: "Development",
-        position: "Designer",
-      },
-      {
-        id: 2,
-        firstName: "Sezin",
-        lastName: "Yazkan",
-        dateOfEmployment: "23/09/2022",
-        dateOfBirth: "02/02/1991",
-        phone: "+905354641232",
-        email: "sezin@gmail.com",
-        department: "Development",
-        position: "Designer",
-      },
-      {
-        id: 2,
-        firstName: "Sezin",
-        lastName: "Yazkan",
-        dateOfEmployment: "23/09/2022",
-        dateOfBirth: "02/02/1991",
-        phone: "+905354641232",
-        email: "sezin@gmail.com",
-        department: "Development",
-        position: "Designer",
-      },
-      {
-        id: 2,
-        firstName: "Sezin",
-        lastName: "Yazkan",
-        dateOfEmployment: "23/09/2022",
-        dateOfBirth: "02/02/1991",
-        phone: "+905354641232",
-        email: "sezin@gmail.com",
-        department: "Development",
-        position: "Designer",
-      },
-    ];
+    this.employees = store.getState().employees;
+    this.filteredEmployees = [...this.employees];
+    this.currentPage = 1;
+    this.pageSize = 4;
+  }
+
+  connectedCallback() {
+    super.connectedCallback();
+    this.unsubscribe = store.subscribe(() => {
+      this.employees = store.getState().employees;
+
+      this.requestUpdate();
+    });
+  }
+
+  disconnectedCallback() {
+    if (this.unsubscribe) this.unsubscribe();
+    super.disconnectedCallback();
   }
 
   toggleMode(param) {
     this.mode = param;
+    this.currentPage = 1;
+    this.pageSize = param === "list" ? 4 : 9;
   }
 
   updateSearch(e) {
@@ -120,10 +74,24 @@ class EmployeeList extends LitElement {
 
     this.requestUpdate();
   }
+  get totalPages() {
+    return Math.ceil(this.filteredEmployees.length / this.pageSize);
+  }
+  goToPage(page) {
+    if (page >= 1 && page <= this.totalPages) {
+      this.currentPage = page;
+    }
+  }
+
+  get paginatedEmployees() {
+    const start = (this.currentPage - 1) * this.pageSize;
+    const end = start + this.pageSize;
+    return this.filteredEmployees.slice(start, end);
+  }
 
   render() {
     const employeesToShow = this.searchQuery
-      ? this.filteredEmployees
+      ? this.paginatedEmployees
       : this.employees;
 
     return html`
@@ -145,8 +113,29 @@ class EmployeeList extends LitElement {
       </section>
       <div>
         ${this.mode === "table"
-          ? html`<table-view .employees=${employeesToShow}></table-view>`
-          : html`<list-view .employees=${employeesToShow}></list-view>`}
+          ? html`<table-view
+              .employees=${this.paginatedEmployees}
+            ></table-view>`
+          : html`<list-view .employees=${this.paginatedEmployees}></list-view>`}
+      </div>
+      <div class="pagination-container">
+        <button
+          class="pagination-button"
+          @click=${() => this.goToPage(this.currentPage - 1)}
+          ?disabled=${this.currentPage === 1}
+        >
+          Previous
+        </button>
+        <span class="pagination-info"
+          >Page ${this.currentPage} of ${this.totalPages}</span
+        >
+        <button
+          class="pagination-button"
+          @click=${() => this.goToPage(this.currentPage + 1)}
+          ?disabled=${this.currentPage === this.totalPages}
+        >
+          Next
+        </button>
       </div>
     `;
   }
