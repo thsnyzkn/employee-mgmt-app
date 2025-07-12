@@ -1,6 +1,9 @@
 import { html, LitElement, css } from "lit";
+import { Router } from "@vaadin/router";
 import "./card-property";
 import { propertyTypes } from "../../utils/constants";
+import editIcon from "../assets/edit.svg";
+import deleteIcon from "../assets/delete.svg";
 
 class ListView extends LitElement {
   static properties = {
@@ -36,6 +39,40 @@ class ListView extends LitElement {
       justify-self: flex;
       text-align: left;
     }
+    .actions-container {
+      display: flex;
+      gap: 8px;
+      justify-content: flex-start;
+      width: 100%;
+    }
+    .actions-container button {
+      display: flex;
+      align-items: center;
+      gap: 4px;
+      padding: 8px 16px;
+      border: 1px solid #ccc;
+      border-radius: 4px;
+      background-color: #f9f9f9;
+      cursor: pointer;
+      font-size: 14px;
+    }
+    .actions-container button:first-of-type {
+      background-color: #4caf50;
+      color: white;
+      border-color: #4caf50;
+    }
+    .actions-container button:last-of-type {
+      background-color: #f44336;
+      color: white;
+      border-color: #f44336;
+    }
+    .actions-container button img {
+      width: 16px;
+      height: 16px;
+      vertical-align: middle;
+      filter: brightness(0) invert(1);
+      color: #ff6200;
+    }
   `;
 
   getEmployeeValue(employee, propertyType) {
@@ -56,12 +93,6 @@ class ListView extends LitElement {
         return employee.department;
       case "Position":
         return employee.position;
-      case "Actions":
-        return html`<div>
-          <button>Edit</button>
-          <button>Delete</button>
-        </div>`;
-
       default:
         return "N/A";
     }
@@ -72,14 +103,33 @@ class ListView extends LitElement {
         ${this.employees?.map(
           (employee) => html`
             <li>
-              ${propertyTypes.map(
-                (property) => html`
-                  <card-property
-                    .title=${this.getEmployeeValue(employee, property)}
-                    .label=${property}
-                  ></card-property>
-                `
-              )}
+              ${propertyTypes
+                .filter((property) => property !== "Actions")
+                .map(
+                  (property) => html`
+                    <card-property
+                      .title=${this.getEmployeeValue(employee, property)}
+                      .label=${property}
+                    ></card-property>
+                  `
+                )}
+              <div class="actions-container">
+                <button @click=${() => Router.go(`/edit/${employee.id}`)}>
+                  ${html`<img src="${editIcon}" alt="Edit" />`} Edit
+                </button>
+                <button
+                  @click=${() =>
+                    this.dispatchEvent(
+                      new CustomEvent("delete-employee", {
+                        detail: { id: employee.id },
+                        bubbles: true,
+                        composed: true,
+                      })
+                    )}
+                >
+                  ${html`<img src="${deleteIcon}" alt="Delete" />`} Delete
+                </button>
+              </div>
             </li>
           `
         )}

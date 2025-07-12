@@ -15,7 +15,7 @@ class ConfirmModal extends LitElement {
     }
     .modal-content {
       background-color: white;
-      padding: 20px;
+      padding: 16px;
       border-radius: 5px;
       text-align: center;
     }

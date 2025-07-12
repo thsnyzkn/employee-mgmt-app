@@ -1,6 +1,8 @@
 import { html, LitElement, css } from "lit";
 import { Router } from "@vaadin/router";
 import { propertyTypes } from "../../utils/constants";
+import editIcon from "../assets/edit.svg";
+import deleteIcon from "../assets/delete.svg";
 
 class TableView extends LitElement {
   static properties = {
@@ -10,20 +12,36 @@ class TableView extends LitElement {
     table {
       width: 100%;
       border-collapse: collapse;
+      padding: 16px;
+      background-color: white;
+      border-radius: 8px;
+      margin-bottom: 16px;
     }
     th,
     td {
       border: 1px solid #ddd;
-      padding: 8px;
+      padding: 12px;
       text-align: left;
     }
+    td:last-of-type {
+      display: flex;
+      gap: 8px;
+    }
     th {
-      background-color: #f2f2f2;
+      background-color: white;
+      color: #ff6200;
     }
     button {
-      margin-right: 5px;
-      padding: 5px 10px;
+      margin-right: 4px;
+      padding: 8px;
       cursor: pointer;
+      background: none;
+      border: none;
+    }
+    button img {
+      width: 24px;
+      height: 24px;
+      vertical-align: middle;
     }
   `;
 
@@ -119,10 +137,10 @@ class TableView extends LitElement {
                 <td>${employee.position}</td>
                 <td>
                   <button @click=${() => Router.go(`/edit/${employee.id}`)}>
-                    Edit
+                    ${html`<img src="${editIcon}" alt="Edit" />`}
                   </button>
                   <button @click=${() => this.deleteEmployee(employee.id)}>
-                    Delete
+                    ${html`<img src="${deleteIcon}" alt="Delete" />`}
                   </button>
                 </td>
               </tr>

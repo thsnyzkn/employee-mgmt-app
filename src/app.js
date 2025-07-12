@@ -10,7 +10,7 @@ class AppRoot extends LitElement {
   static styles = css`
     .page-container {
       @media (min-width: 768px) {
-        max-width: 1200px;
+        max-width: 1440px;
       }
       margin: 0 auto;
     }
@@ -56,8 +56,11 @@ class AppRoot extends LitElement {
       },
       {
         path: "/edit/:id",
-        component: "employee-form",
-        action: async () => await import("./pages/employee-form.js"),
+        action: async (context, commands) => {
+          const employeeForm = commands.component(EmployeeForm);
+          employeeForm.employeeId = Number(context.params.id);
+          return employeeForm;
+        },
       },
       { path: "(.*)", redirect: "/" },
     ]);
