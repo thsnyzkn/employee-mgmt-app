@@ -32,18 +32,73 @@ class TableView extends LitElement {
     mode: { type: String },
   };
 
+  constructor() {
+    super();
+    this.selectedEmployees = new Set();
+  }
+
+  handleMasterCheckboxChange(e) {
+    const isChecked = e.target.checked;
+    this.employees.forEach((employee) => {
+      this.updateSelected(employee.id, isChecked);
+    });
+    this.requestUpdate();
+  }
+
+  handleRowCheckboxChange(employeeId, e) {
+    this.updateSelected(employeeId, e.target.checked);
+    this.requestUpdate();
+  }
+
+  updateSelected(employeeId, isSelected) {
+    if (isSelected) {
+      this.selectedEmployees.add(employeeId);
+    } else {
+      this.selectedEmployees.delete(employeeId);
+    }
+    this.dispatchEvent(
+      new CustomEvent("selection-changed", {
+        detail: { selectedIds: [...this.selectedEmployees] },
+        bubbles: true,
+        composed: true,
+      })
+    );
+  }
+
   render() {
+    const areAllSelected =
+      this.employees.length > 0 &&
+      this.employees.every((e) => this.selectedEmployees.has(e.id));
     return html`
       <table>
         <thead>
           <tr>
+            <th>
+              <input
+                type="checkbox"
+                .checked=${areAllSelected}
+                @change=${this.handleMasterCheckboxChange}
+              />
+            </th>
             ${propertyTypes.map((property) => html`<th>${property}</th>`)}
           </tr>
         </thead>
         <tbody>
           ${this.employees.map(
             (employee) => html`
-              <tr>
+              <tr
+                class=${this.selectedEmployees.has(employee.id)
+                  ? "selected"
+                  : ""}
+              >
+                <td>
+                  <input
+                    type="checkbox"
+                    .checked=${this.selectedEmployees.has(employee.id)}
+                    @change=${(e) =>
+                      this.handleRowCheckboxChange(employee.id, e)}
+                  />
+                </td>
                 <td>${employee.firstName}</td>
                 <td>${employee.lastName}</td>
                 <td>${employee.dateOfEmployment}</td>

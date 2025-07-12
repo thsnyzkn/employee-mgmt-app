@@ -1,5 +1,5 @@
 import { html, LitElement, css } from "lit";
-import { store } from "../store";
+import { store, deleteSelectedEmployees } from "../store";
 import "../components/table-view";
 import "../components/list-view";
 
@@ -39,13 +39,38 @@ class EmployeeList extends LitElement {
     this.filteredEmployees = [...this.employees];
     this.currentPage = 1;
     this.pageSize = 4;
+    this.selectedEmployeeIds = [];
+  }
+
+  handleSelectionChanged(e) {
+    this.selectedEmployeeIds = e.detail.selectedIds;
+    this.requestUpdate();
+  }
+
+  deleteSelected() {
+    store.dispatch(deleteSelectedEmployees(this.selectedEmployeeIds));
+    this.selectedEmployeeIds = [];
+  }
+
+  _applyFilter() {
+    if (this.searchQuery) {
+      this.filteredEmployees = this.employees.filter((employee) =>
+        ["firstName", "lastName", "department", "position"].some(
+          (field) =>
+            employee[field] &&
+            employee[field].toLowerCase().includes(this.searchQuery)
+        )
+      );
+    } else {
+      this.filteredEmployees = [...this.employees];
+    }
   }
 
   connectedCallback() {
     super.connectedCallback();
     this.unsubscribe = store.subscribe(() => {
       this.employees = store.getState().employees;
-
+      this._applyFilter();
       this.requestUpdate();
     });
   }
@@ -63,15 +88,7 @@ class EmployeeList extends LitElement {
 
   updateSearch(e) {
     this.searchQuery = e.target.value.toLowerCase();
-    if (this.searchQuery)
-      this.filteredEmployees = this.employees.filter((employee) =>
-        ["firstName", "lastName", "department", "position"].some(
-          (field) =>
-            employee[field] &&
-            employee[field].toLowerCase().includes(this.searchQuery)
-        )
-      );
-
+    this._applyFilter();
     this.requestUpdate();
   }
   get totalPages() {
@@ -107,6 +124,12 @@ class EmployeeList extends LitElement {
           />
         </div>
         <div id="button-wrapper">
+          <button
+            @click=${this.deleteSelected}
+            ?disabled=${this.selectedEmployeeIds.length === 0}
+          >
+            Delete Selected
+          </button>
           <button @click=${() => this.toggleMode("table")}>Table</button>
           <button @click=${() => this.toggleMode("list")}>List</button>
         </div>
@@ -115,6 +138,7 @@ class EmployeeList extends LitElement {
         ${this.mode === "table"
           ? html`<table-view
               .employees=${this.paginatedEmployees}
+              @selection-changed=${this.handleSelectionChanged}
             ></table-view>`
           : html`<list-view .employees=${this.paginatedEmployees}></list-view>`}
       </div>

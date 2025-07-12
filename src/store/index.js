@@ -161,22 +161,38 @@ const employeesSlice = createSlice({
   initialState: initialState.employees,
   reducers: {
     addEmployee: (state, action) => {
-      const newState = state.push(action.payload);
+      const newState = [...state, action.payload];
       saveState({ employees: newState });
       return newState;
     },
     updateEmployee: (state, action) => {
-      const idx = state.findIndex((e) => e.id === action.payload.id);
-      if (idx !== -1) state[idx] = action.payload;
+      const newState = state.map((employee) =>
+        employee.id === action.payload.id ? action.payload : employee
+      );
+      saveState({ employees: newState });
+      return newState;
     },
     deleteEmployee: (state, action) => {
-      return state.filter((e) => e.id !== action.payload);
+      const newState = state.filter((e) => e.id !== action.payload);
+      saveState({ employees: newState });
+      return newState;
+    },
+    deleteSelectedEmployees: (state, action) => {
+      const idsToDelete = new Set(action.payload);
+      const newState = state.filter((e) => !idsToDelete.has(e.id));
+      console.log({ newState });
+      saveState({ employees: newState });
+      return newState;
     },
   },
 });
 
-export const { addEmployee, updateEmployee, deleteEmployee } =
-  employeesSlice.actions;
+export const {
+  addEmployee,
+  updateEmployee,
+  deleteEmployee,
+  deleteSelectedEmployees,
+} = employeesSlice.actions;
 
 export const store = configureStore({
   reducer: {
