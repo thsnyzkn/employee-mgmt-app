@@ -67,6 +67,10 @@ class AppRoot extends LitElement {
     ]);
   }
 
+  changeLanguage() {
+    
+  }
+
   render() {
     return html`
       <header role="banner">

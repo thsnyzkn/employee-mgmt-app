@@ -99,16 +99,36 @@ class EmployeeForm extends LitElement {
 
   connectedCallback() {
     super.connectedCallback();
+    this._loadEmployee();
+  }
+
+  _loadEmployee() {
     if (this.employeeId) {
       const state = store.getState();
       const foundEmployee = state.employees.find(
         (emp) => emp.id === this.employeeId
       );
-      this.employee = foundEmployee ? { ...foundEmployee } : {}; // Create a new object reference
+      this.employee = foundEmployee ? { ...foundEmployee } : {};
+    } else {
+      // Reset to default empty state when no employeeId
+      this.employee = {
+        firstName: "",
+        lastName: "",
+        dateOfEmployment: "",
+        dateOfBirth: "",
+        phone: "",
+        email: "",
+        department: "",
+        position: "",
+      };
     }
   }
 
   updated(changedProperties) {
+    if (changedProperties.has("employeeId")) {
+      this._loadEmployee();
+    }
+    
     if (
       changedProperties.has("employee") ||
       changedProperties.has("employeeId")
@@ -220,9 +240,9 @@ class EmployeeForm extends LitElement {
                 .value=${this.employee.department || ""}
                 required
               >
-                <option value="" disabled selected>Please Select</option>
-                <option value="Analytics">Analytics</option>
-                <option value="Tech">Tech</option>
+                <option value="" disabled ?selected=${!this.employee.department}>Please Select</option>
+                <option value="Analytics" ?selected=${this.employee.department === 'Analytics'}>Analytics</option>
+                <option value="Tech" ?selected=${this.employee.department === 'Tech'}>Tech</option>
               </select>
             </div>
             <div class="form-group">
@@ -233,10 +253,10 @@ class EmployeeForm extends LitElement {
                 .value=${this.employee.position || ""}
                 required
               >
-                <option value="" disabled selected>Please Select</option>
-                <option value="Junior">Junior</option>
-                <option value="Medior">Medior</option>
-                <option value="Senior">Senior</option>
+                <option value="" disabled ?selected=${!this.employee.position}>Please Select</option>
+                <option value="Junior" ?selected=${this.employee.position === 'Junior'}>Junior</option>
+                <option value="Medior" ?selected=${this.employee.position === 'Medior'}>Medior</option>
+                <option value="Senior" ?selected=${this.employee.position === 'Senior'}>Senior</option>
               </select>
             </div>
           </div>

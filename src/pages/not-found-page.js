@@ -6,4 +6,4 @@ class NotFoundPage extends LitElement {
   }
 }
 
-customElements.define("main-element", MainElement);
+customElements.define("not-found-page", NotFoundPage);
