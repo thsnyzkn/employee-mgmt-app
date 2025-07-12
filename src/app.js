@@ -57,7 +57,8 @@ class AppRoot extends LitElement {
       {
         path: "/edit/:id",
         action: async (context, commands) => {
-          const employeeForm = commands.component(EmployeeForm);
+          await import("./pages/employee-form.js");
+          const employeeForm = commands.component("employee-form");
           employeeForm.employeeId = Number(context.params.id);
           return employeeForm;
         },
