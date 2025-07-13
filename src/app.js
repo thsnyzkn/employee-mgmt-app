@@ -8,35 +8,155 @@ class AppRoot extends LitElement {
   };
 
   static styles = css`
-    .page-container {
-      @media (min-width: 768px) {
-        max-width: 1440px;
-      }
-      margin: 0 auto;
+    :host {
+      display: block;
+      min-height: 100vh;
     }
+
+    .page-container {
+      padding: 16px;
+      margin: 0 auto;
+      max-width: 100%;
+    }
+
+    @media (min-width: 768px) {
+      .page-container {
+        max-width: 1440px;
+        padding: 32px;
+      }
+    }
+
     header {
       display: flex;
       justify-content: space-between;
+      align-items: center;
       background-color: white;
-      a {
-        text-decoration: none;
-        color: #ff6200;
-        display: flex;
+      padding: 0px 4px;
+      box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+      position: sticky;
+      top: 0;
+      z-index: 1000;
+      min-height: 72px;
+    }
+
+    .header-logo {
+      display: flex;
+      align-items: center;
+      text-decoration: none;
+      color: #ff6200;
+      font-weight: bold;
+      gap: 12px;
+      font-size: 20px;
+      flex-shrink: 0;
+    }
+
+    .header-logo img {
+      width: 40px;
+      height: 40px;
+      flex-shrink: 0;
+    }
+
+    .header-nav {
+      display: flex;
+      align-items: center;
+      gap: 16px;
+      flex-wrap: wrap;
+    }
+
+    .header-nav a {
+      text-decoration: none;
+      color: #ff6200;
+      font-weight: 500;
+      padding: 8px 16px;
+      border-radius: 6px;
+      transition: background-color 0.2s;
+      white-space: nowrap;
+    }
+
+    .header-nav a:hover {
+      background-color: rgba(255, 98, 0, 0.1);
+    }
+
+    .header-nav button {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      background: transparent;
+      border: 1px solid #ddd;
+      border-radius: 6px;
+      cursor: pointer;
+      transition: all 0.2s;
+    }
+
+    .header-nav button:hover {
+      background-color: rgba(255, 98, 0, 0.1);
+      border-color: #ff6200;
+    }
+
+    .header-nav button img {
+      width: 24px;
+      height: 24px;
+    }
+
+    @media (max-width: 640px) {
+      header {
         align-items: center;
+        padding: 16px;
+        gap: 16px;
+        min-height: auto;
       }
-      div {
-        display: flex;
-        justify-content: space-between;
+
+      .header-logo {
+        font-size: 18px;
+      }
+
+      .header-logo img {
+        width: 36px;
+        height: 36px;
+      }
+
+      .header-nav {
+        justify-content: center;
+        gap: 12px;
+        width: 100%;
+      }
+
+      .header-nav a {
+        font-size: 14px;
+        padding: 10px 16px;
+        flex: 1;
+        text-align: center;
+        min-width: 0;
+      }
+    }
+
+    @media (max-width: 480px) {
+      .header-nav {
         gap: 8px;
+      }
+
+      .header-nav a {
+        width: 100%;
+        text-align: center;
+        padding: 12px 20px;
       }
     }
 
     button {
       all: unset;
       outline: revert;
-      margin-right: 4px;
-      padding: 4px 8px;
+      padding: 8px 12px;
       cursor: pointer;
+      border-radius: 4px;
+      transition: background-color 0.2s;
+    }
+
+    button:hover {
+      background-color: rgba(255, 98, 0, 0.1);
+    }
+
+    button img {
+      vertical-align: middle;
     }
   `;
 
@@ -67,29 +187,27 @@ class AppRoot extends LitElement {
     ]);
   }
 
-  changeLanguage() {
-    
-  }
+  changeLanguage() {}
 
   render() {
     return html`
       <header role="banner">
-        <a href="/"
-          ><img src=${logo} height="40px" width="40px" alt="Ing Logo" /> Ing</a
-        >
-        <div>
+        <a href="/" class="header-logo">
+          <img src=${logo} alt="Ing Logo" />
+          <span>Ing</span>
+        </a>
+        <nav class="header-nav">
           <a href="/">Employees</a>
           <a href="/add">Add Employee</a>
-
           <button @click=${this.changeLanguage}>
             <img
               src=${tr}
-              height="40px"
-              width="40px"
+              width="24"
+              height="24"
               alt="Turkish Language Selector"
             />
           </button>
-        </div>
+        </nav>
       </header>
       <div class="page-container">
         <div id="outlet"></div>

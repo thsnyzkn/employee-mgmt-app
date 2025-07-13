@@ -10,68 +10,157 @@ class ListView extends LitElement {
     employees: { type: Array },
   };
   static styles = css`
+    :host {
+      display: block;
+    }
+
     ol {
       display: grid;
-      grid-template-columns: repeat(2, minmax(480px, 1fr));
-      justify-content: space-between;
+      grid-template-columns: 1fr;
       gap: 16px;
       padding: 0;
       margin: 0;
       list-style: none;
-      margin: 0 auto;
     }
+
+    @media (min-width: 768px) {
+      ol {
+        grid-template-columns: repeat(auto-fit, minmax(400px, 1fr));
+        gap: 20px;
+      }
+    }
+
+    @media (min-width: 1200px) {
+      ol {
+        grid-template-columns: repeat(auto-fit, minmax(450px, 1fr));
+        gap: 24px;
+      }
+    }
+
     li {
       display: grid;
-      grid-template-columns: repeat(2, 1fr);
-      justify-content: space-between;
-      gap: 24px;
+      grid-template-columns: 1fr;
+      gap: 12px;
       padding: 16px;
       background-color: white;
-      border-radius: 8px;
-      box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
-      transition: box-shadow 0.2s, transform 0.2s;
+      border-radius: 12px;
+      box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+      transition: all 0.3s ease;
+      border: 1px solid #e0e0e0;
     }
+
+    @media (min-width: 480px) {
+      li {
+        grid-template-columns: repeat(2, 1fr);
+        gap: 16px;
+        padding: 20px;
+      }
+    }
+
+    @media (min-width: 768px) {
+      li {
+        gap: 20px;
+        padding: 24px;
+      }
+    }
+
     li:hover {
-      box-shadow: 0 8px 16px -2px rgba(0, 0, 0, 0.15);
-      transform: translateY(-4px) scale(1.02);
+      box-shadow: 0 8px 24px rgba(0, 0, 0, 0.15);
+      transform: translateY(-2px);
+      border-color: #ff6200;
     }
-    li > *:nth-child(2n) {
-      justify-self: flex;
-      text-align: left;
+
+    @media (min-width: 480px) {
+      li > *:nth-child(2n) {
+        justify-self: flex-start;
+        text-align: left;
+      }
     }
+
     .actions-container {
       display: flex;
       gap: 8px;
-      justify-content: flex-start;
+      justify-content: center;
       width: 100%;
+      margin-top: 8px;
+      flex-wrap: wrap;
     }
+
+    @media (min-width: 480px) {
+      .actions-container {
+        justify-content: flex-start;
+        margin-top: 12px;
+        flex-wrap: nowrap;
+      }
+    }
+
     .actions-container button {
       display: flex;
       align-items: center;
-      gap: 4px;
-      padding: 8px 16px;
+      justify-content: center;
+      gap: 6px;
+      padding: 10px 16px;
       border: 1px solid #ccc;
-      border-radius: 4px;
+      border-radius: 8px;
       background-color: #f9f9f9;
       cursor: pointer;
       font-size: 14px;
+      font-weight: 500;
+      transition: all 0.2s;
+      flex: 1;
+      min-width: 0;
+      white-space: nowrap;
     }
+
+    @media (min-width: 480px) {
+      .actions-container button {
+        flex: 0 1 auto;
+        padding: 8px 16px;
+      }
+    }
+
+    @media (min-width: 768px) {
+      .actions-container button {
+        padding: 10px 20px;
+        font-size: 15px;
+      }
+    }
+
     .actions-container button:first-of-type {
       background-color: #4caf50;
       color: white;
       border-color: #4caf50;
     }
+
+    .actions-container button:first-of-type:hover {
+      background-color: #45a049;
+      border-color: #45a049;
+    }
+
     .actions-container button:last-of-type {
       background-color: #f44336;
       color: white;
       border-color: #f44336;
     }
+
+    .actions-container button:last-of-type:hover {
+      background-color: #da190b;
+      border-color: #da190b;
+    }
+
     .actions-container button img {
       width: 16px;
       height: 16px;
       vertical-align: middle;
       filter: brightness(0) invert(1);
-      color: #ff6200;
+      flex-shrink: 0;
+    }
+
+    @media (min-width: 768px) {
+      .actions-container button img {
+        width: 18px;
+        height: 18px;
+      }
     }
   `;
 

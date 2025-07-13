@@ -11,32 +11,83 @@ import arrowRightIcon from "../assets/next.svg";
 
 class EmployeeList extends LitElement {
   static styles = css`
+    :host {
+      display: block;
+      padding-bottom: 80px; /* Space for fixed pagination */
+    }
+
     section {
-      margin: 0;
+      margin: 0 0 24px 0;
       display: flex;
-      justify-content: space-between;
-      align-items: center;
+      flex-direction: column;
+      gap: 16px;
     }
+
+    @media (min-width: 768px) {
+      section {
+        flex-direction: row;
+        justify-content: space-between;
+        align-items: center;
+        gap: 24px;
+      }
+    }
+
+    h2 {
+      margin: 0;
+      font-size: 24px;
+      color: #333;
+    }
+
+    @media (max-width: 767px) {
+      h2 {
+        font-size: 20px;
+        text-align: center;
+      }
+    }
+
     .search-container {
-      margin-bottom: 16px;
-      margin-right: 16px;
+      flex: 1;
+      max-width: 100%;
+      margin-bottom: 0;
     }
+
+    @media (min-width: 768px) {
+      .search-container {
+        max-width: 400px;
+        margin-right: 16px;
+      }
+    }
+
     .search-input {
       width: 100%;
-      padding: 8px 16px;
-      border-radius: 4px;
+      padding: 12px 16px;
+      border: 2px solid #ddd;
+      border-radius: 8px;
       font-size: 16px;
+      box-sizing: border-box;
+      transition: border-color 0.2s;
     }
+
     .search-input:focus {
       outline: none;
       border-color: #ff6200;
-      box-shadow: 0 0 0 3px rgba(0, 123, 255, 0.25);
+      box-shadow: 0 0 0 3px rgba(255, 98, 0, 0.1);
     }
+
     .button-wrapper {
       display: flex;
       gap: 8px;
-      background-color: transparent;
+      justify-content: center;
+      flex-wrap: wrap;
     }
+
+    @media (min-width: 768px) {
+      .button-wrapper {
+        justify-content: flex-end;
+        flex-wrap: nowrap;
+      }
+    }
+
     .pagination-container {
       position: fixed;
       bottom: 0;
@@ -45,9 +96,19 @@ class EmployeeList extends LitElement {
       display: flex;
       justify-content: center;
       align-items: center;
-      gap: 16px;
-      padding: 16px;
+      gap: 8px;
+      padding: 12px 16px;
+      z-index: 100;
+      overflow-x: auto;
     }
+
+    @media (min-width: 768px) {
+      .pagination-container {
+        gap: 16px;
+        padding: 16px;
+      }
+    }
+
     .pagination-button {
       padding: 8px;
       border: none;
@@ -56,31 +117,53 @@ class EmployeeList extends LitElement {
       display: flex;
       align-items: center;
       justify-content: center;
+      min-width: 36px;
+      min-height: 36px;
+      border-radius: 50%;
+      transition: all 0.2s;
+      flex-shrink: 0;
     }
+
     .pagination-button:not(:has(img)) {
       border: 1px solid #ccc;
-      border-radius: 50%;
-      width: 32px;
-      height: 32px;
-      padding: 0;
       background-color: #f9f9f9;
+      font-size: 14px;
+      font-weight: 500;
     }
+
+    @media (min-width: 768px) {
+      .pagination-button {
+        min-width: 40px;
+        min-height: 40px;
+      }
+
+      .pagination-button:not(:has(img)) {
+        font-size: 16px;
+      }
+    }
+
     .pagination-button.active {
       background-color: #ff6200;
       color: white;
       border-color: #ff6200;
+      transform: scale(1.1);
     }
-    .pagination-button.active:not(:has(img)) {
-      color: white;
-    }
+
     .pagination-button:disabled {
-      opacity: 0.5;
+      opacity: 0.4;
       cursor: not-allowed;
     }
-    .pagination-info {
-      font-size: 16px;
-      font-weight: bold;
+
+    .pagination-button:not(:disabled):hover {
+      background-color: #ff6200;
+      color: white;
+      border-color: #ff6200;
     }
+
+    .pagination-button.active:not(:disabled):hover {
+      background-color: #e55a00;
+    }
+
     button {
       all: unset;
       cursor: pointer;
@@ -88,12 +171,42 @@ class EmployeeList extends LitElement {
       align-items: center;
       gap: 4px;
       background-color: transparent;
-      border: none;
-      padding: 4px 8px;
+      border: 1px solid #ddd;
+      padding: 8px 12px;
+      border-radius: 6px;
+      transition: all 0.2s;
+      font-size: 14px;
+      white-space: nowrap;
     }
+
+    @media (min-width: 768px) {
+      button {
+        padding: 8px 16px;
+        font-size: 16px;
+      }
+    }
+
+    button:hover:not(:disabled) {
+      background-color: #f5f5f5;
+      border-color: #999;
+    }
+
+    button:disabled {
+      opacity: 0.5;
+      cursor: not-allowed;
+    }
+
     button img {
       width: 16px;
       height: 16px;
+      flex-shrink: 0;
+    }
+
+    @media (min-width: 768px) {
+      button img {
+        width: 18px;
+        height: 18px;
+      }
     }
   `;
 
