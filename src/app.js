@@ -1,11 +1,18 @@
 import { LitElement, html, css } from "lit";
 import { Router } from "@vaadin/router";
+import { msg } from "@lit/localize";
+
 import logo from "./assets/logo.svg";
-import tr from "./assets/tr.svg";
+import "./components/language-dropdown.js";
 class AppRoot extends LitElement {
   static properties = {
     employees: { type: Array },
   };
+
+  constructor() {
+    super();
+    updateWhenLocaleChanges(this);
+  }
 
   static styles = css`
     :host {
@@ -187,7 +194,10 @@ class AppRoot extends LitElement {
     ]);
   }
 
-  changeLanguage() {}
+  onLanguageChanged(e) {
+    // Re-render when language changes to update localized messages
+    this.requestUpdate();
+  }
 
   render() {
     return html`
@@ -197,16 +207,11 @@ class AppRoot extends LitElement {
           <span>Ing</span>
         </a>
         <nav class="header-nav">
-          <a href="/">Employees</a>
-          <a href="/add">Add Employee</a>
-          <button @click=${this.changeLanguage}>
-            <img
-              src=${tr}
-              width="24"
-              height="24"
-              alt="Turkish Language Selector"
-            />
-          </button>
+          <a href="/"> ${msg("Employees")}</a>
+          <a href="/add">${msg("Add Employee")}</a>
+          <language-dropdown
+            @language-changed=${this.onLanguageChanged}
+          ></language-dropdown>
         </nav>
       </header>
       <div class="page-container">

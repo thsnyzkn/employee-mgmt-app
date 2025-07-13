@@ -113,7 +113,7 @@ const employees = [
   },
 ];
 
-const defaultState = { employees };
+const defaultState = { employees, lang: "en" };
 
 const loadState = () => {
   try {
@@ -168,6 +168,20 @@ const employeesSlice = createSlice({
   },
 });
 
+const langSlice = createSlice({
+  name: "lang",
+  initialState: initialState.lang || "en",
+  reducers: {
+    setLang: (_state, action) => {
+      const newState = action.payload;
+      saveState({ ...initialState, lang: newState });
+      return newState;
+    },
+  },
+});
+
+export const { setLang } = langSlice.actions;
+
 export const {
   addEmployee,
   updateEmployee,
@@ -177,6 +191,7 @@ export const {
 
 export const store = configureStore({
   reducer: {
+    lang: langSlice.reducer,
     employees: employeesSlice.reducer,
   },
 });
