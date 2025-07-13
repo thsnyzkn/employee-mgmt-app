@@ -232,6 +232,7 @@ class EmployeeList extends LitElement {
     this.selectedEmployeeIds = [];
     this.isModalVisible = false;
     this.modalMessage = "";
+    this.modalTitle = "";
     this.confirmAction = () => {};
   }
 
@@ -251,6 +252,8 @@ class EmployeeList extends LitElement {
   }
 
   deleteSingleEmployee(employeeId) {
+    const employee = this.employees.find((emp) => emp.id === employeeId);
+    this.modalTitle = `Confirm Delete ${employee.firstName} ${employee.lastName}`;
     this.modalMessage = "Are you sure you want to delete this employee?";
     this.confirmAction = () => {
       store.dispatch(deleteEmployee(employeeId));
@@ -316,6 +319,7 @@ class EmployeeList extends LitElement {
       ${this.isModalVisible
         ? html`
             <confirm-modal
+              .title=${this.modalTitle}
               .message=${this.modalMessage}
               .onConfirm=${this.confirmAction}
               .onCancel=${() => (this.isModalVisible = false)}
