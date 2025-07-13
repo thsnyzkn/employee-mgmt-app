@@ -302,7 +302,7 @@ class EmployeeForm extends LitElement {
   render() {
     return html`
       <div class="form-container">
-        <h2>${this.employeeId ? "Edit Employee" : "Add Employee"}</h2>
+        <h2>${this.employeeId ? `Edit Employee: ${this.employee.firstName} ${this.employee.lastName}` : "Add Employee"}</h2>
         <form @submit=${this._handleSubmit}>
           <div class="form-grid">
             <div class="form-group">
