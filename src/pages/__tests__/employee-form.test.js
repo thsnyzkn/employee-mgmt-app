@@ -53,7 +53,7 @@ describe('EmployeeForm Page', () => {
     
     // Check form title
     const title = component.shadowRoot.querySelector('h2')
-    expect(title.textContent).toBe('Add Employee')
+    expect(title.textContent.trim()).toBe('Add Employee')
   })
 
   it('should initialize with correct default properties', async () => {

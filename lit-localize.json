@@ -2,7 +2,7 @@
   "$schema": "https://raw.githubusercontent.com/lit/lit/main/packages/localize-tools/config.schema.json",
   "sourceLocale": "en",
   "targetLocales": ["tr"],
-  "inputFiles": ["src/pages/**/*.js", "src/components/**/*.js"],
+  "inputFiles": ["src/app.js", "src/pages/**/*.js", "src/components/**/*.js"],
   "output": {
     "mode": "runtime",
     "outputDir": "./generated/locales",

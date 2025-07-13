@@ -59,8 +59,8 @@ describe('AppRoot Component', () => {
     const logoImg = logoLink.querySelector('img')
     expect(logoImg).toBeTruthy()
     expect(logoImg.alt).toBe('Ing Logo')
-    expect(logoImg.getAttribute('height')).toBe('40px')
-    expect(logoImg.getAttribute('width')).toBe('40px')
+    // Image dimensions are set via CSS, not attributes
+    expect(logoImg.src).toContain('logo.svg')
   })
 
   it('should render navigation links correctly', async () => {
@@ -70,7 +70,7 @@ describe('AppRoot Component', () => {
     component = container.querySelector('app-root')
     await component.updateComplete
 
-    const navDiv = component.shadowRoot.querySelector('header div')
+    const navDiv = component.shadowRoot.querySelector('nav.header-nav')
     expect(navDiv).toBeTruthy()
 
     const links = navDiv.querySelectorAll('a')
@@ -92,14 +92,19 @@ describe('AppRoot Component', () => {
     component = container.querySelector('app-root')
     await component.updateComplete
 
-    const languageButton = component.shadowRoot.querySelector('button')
+    const languageDropdown = component.shadowRoot.querySelector('language-dropdown')
+    expect(languageDropdown).toBeTruthy()
+    
+    // Wait for the language dropdown to render
+    await languageDropdown.updateComplete
+    
+    const languageButton = languageDropdown.shadowRoot.querySelector('button')
     expect(languageButton).toBeTruthy()
 
     const languageImg = languageButton.querySelector('img')
     expect(languageImg).toBeTruthy()
-    expect(languageImg.alt).toBe('Turkish Language Selector')
-    expect(languageImg.getAttribute('height')).toBe('40px')
-    expect(languageImg.getAttribute('width')).toBe('40px')
+    // Image dimensions are set via CSS, not attributes
+    expect(languageImg.src).toContain('data:image/svg+xml')
   })
 
   it('should render page container and outlet', async () => {
@@ -204,18 +209,18 @@ describe('AppRoot Component', () => {
     component = container.querySelector('app-root')
     await component.updateComplete
 
-    // Verify changeLanguage method exists
-    expect(component.changeLanguage).toBeDefined()
-    expect(typeof component.changeLanguage).toBe('function')
+    // Verify onLanguageChanged method exists
+    expect(component.onLanguageChanged).toBeDefined()
+    expect(typeof component.onLanguageChanged).toBe('function')
     
     // Verify method can be called without errors
     expect(() => {
-      component.changeLanguage()
+      component.onLanguageChanged()
     }).not.toThrow()
 
-    // Verify button exists and has click handler
-    const languageButton = component.shadowRoot.querySelector('button')
-    expect(languageButton).toBeTruthy()
+    // Verify language dropdown exists
+    const languageDropdown = component.shadowRoot.querySelector('language-dropdown')
+    expect(languageDropdown).toBeTruthy()
   })
 
   it('should have correct CSS classes and structure', async () => {

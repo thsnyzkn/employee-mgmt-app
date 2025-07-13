@@ -4,108 +4,147 @@
 <body>
 <trans-unit id="sa79c7d76410170cb">
   <source>Edit Employee: <x id="0" equiv-text="${this.employee.firstName} ${this.employee.lastName}"/></source>
+  <target>Çalışanı Düzenle: <x id="0" equiv-text="${this.employee.firstName} ${this.employee.lastName}"/></target>
 </trans-unit>
 <trans-unit id="s32c9b3dd030fc24c">
   <source>Add Employee</source>
+  <target>Çalışan Ekle</target>
 </trans-unit>
 <trans-unit id="s8f9e71bb4427e946">
   <source>First Name:</source>
+  <target>Ad:</target>
 </trans-unit>
 <trans-unit id="sfab5e4723ff2110e">
   <source>Last Name:</source>
+  <target>Soyad:</target>
 </trans-unit>
 <trans-unit id="sc485ed452796ab62">
   <source>Date of Employment:</source>
+  <target>İşe Başlama Tarihi:</target>
 </trans-unit>
 <trans-unit id="sb341326bd732c0c7">
   <source>Date of Birth:</source>
+  <target>Doğum Tarihi:</target>
 </trans-unit>
 <trans-unit id="s5f03f35ef88bfd4f">
   <source>Phone:</source>
+  <target>Telefon:</target>
 </trans-unit>
 <trans-unit id="s8430c71b7abe6807">
   <source>Email:</source>
+  <target>E-posta:</target>
 </trans-unit>
 <trans-unit id="sd014b6fddbaf31c7">
   <source>Department:</source>
+  <target>Departman:</target>
 </trans-unit>
 <trans-unit id="sf9ce70dc72fea861">
   <source>Please Select</source>
+  <target>Lütfen Seçin</target>
 </trans-unit>
 <trans-unit id="s2c2b04f2561a1d4b">
   <source>Analytics</source>
+  <target>Analitik</target>
 </trans-unit>
 <trans-unit id="s24aadbfb1b1a1a11">
   <source>Tech</source>
+  <target>Teknoloji</target>
 </trans-unit>
 <trans-unit id="s0a8cad154aa09930">
   <source>Position:</source>
+  <target>Pozisyon:</target>
 </trans-unit>
 <trans-unit id="s7404d9208a486318">
   <source>Junior</source>
+  <target>Genç</target>
 </trans-unit>
 <trans-unit id="sacc4d771f79ccced">
   <source>Medior</source>
+  <target>Orta</target>
 </trans-unit>
 <trans-unit id="s8a37652cc28d3c55">
   <source>Senior</source>
+  <target>Kıdemli</target>
 </trans-unit>
 <trans-unit id="s33f85f24c0f5f008">
   <source>Save</source>
+  <target>Kaydet</target>
 </trans-unit>
 <trans-unit id="s2ceb11be2290bb1b">
   <source>Cancel</source>
+  <target>İptal</target>
 </trans-unit>
 <trans-unit id="s2c57913ffd36d298">
   <source>First Name</source>
+  <target>Ad</target>
 </trans-unit>
 <trans-unit id="s95a75a2392af5780">
   <source>Last Name</source>
+  <target>Soyad</target>
 </trans-unit>
 <trans-unit id="s772528836550622c">
   <source>Date of Employment</source>
+  <target>İşe Başlama Tarihi</target>
 </trans-unit>
 <trans-unit id="s53802e3f37d072a7">
   <source>Date of Birth</source>
+  <target>Doğum Tarihi</target>
 </trans-unit>
 <trans-unit id="sf1bc83d2509bafcf">
   <source>Phone</source>
+  <target>Telefon</target>
 </trans-unit>
 <trans-unit id="sd1f44f1a8bc20e67">
   <source>Email</source>
+  <target>E-posta</target>
 </trans-unit>
 <trans-unit id="s1e45a4d7635fbda7">
   <source>Department</source>
+  <target>Departman</target>
 </trans-unit>
 <trans-unit id="sc1611c0558728a2a">
   <source>Position</source>
+  <target>Pozisyon</target>
 </trans-unit>
 <trans-unit id="s8af61807443f32a4">
   <source>Actions</source>
+  <target>Eylemler</target>
 </trans-unit>
 <trans-unit id="s64ef2a6c2dd1d3d1">
   <source>Edit</source>
+  <target>Düzenle</target>
 </trans-unit>
 <trans-unit id="sdc673e73b5c13aea">
   <source>Delete</source>
+  <target>Sil</target>
 </trans-unit>
 <trans-unit id="sb85774dc5d18ff0f">
   <source>Confirm</source>
+  <target>Onayla</target>
 </trans-unit>
 <trans-unit id="sa5e78fc52952a904">
   <source>Are you sure you want to delete the selected employees?</source>
+  <target>Seçilen çalışanları silmek istediğinizden emin misiniz?</target>
 </trans-unit>
 <trans-unit id="s2115132d80fff8c2">
   <source>Confirm Delete <x id="0" equiv-text="${employee.firstName} ${employee.lastName}"/></source>
+  <target>Silme İşlemini Onayla <x id="0" equiv-text="${employee.firstName} ${employee.lastName}"/></target>
 </trans-unit>
 <trans-unit id="sb15e48a6ab4e4c27">
   <source>Are you sure you want to delete this employee?</source>
+  <target>Bu çalışanı silmek istediğinizden emin misiniz?</target>
 </trans-unit>
 <trans-unit id="s3db6c3999daeecdb">
   <source>Employee List</source>
+  <target>Çalışan Listesi</target>
 </trans-unit>
 <trans-unit id="s401f505670d8ba5d">
   <source>Search by name, department, or position...</source>
+  <target>İsim, departman veya pozisyona göre ara...</target>
+</trans-unit>
+<trans-unit id="scba00271d50c74f6">
+  <source>Employees</source>
+  <target>Çalışanlar</target>
 </trans-unit>
 </body>
 </file>

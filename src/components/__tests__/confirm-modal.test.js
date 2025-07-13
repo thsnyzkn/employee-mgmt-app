@@ -40,8 +40,8 @@ describe('ConfirmModal Component', () => {
     
     const buttons = component.shadowRoot.querySelectorAll('button')
     expect(buttons.length).toBe(2)
-    expect(buttons[0].textContent).toBe('Confirm')
-    expect(buttons[1].textContent).toBe('Cancel')
+    expect(buttons[0].textContent.trim()).toBe('Confirm')
+    expect(buttons[1].textContent.trim()).toBe('Cancel')
   })
 
   it('should call onConfirm when confirm button is clicked', async () => {

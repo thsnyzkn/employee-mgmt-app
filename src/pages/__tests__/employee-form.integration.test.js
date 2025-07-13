@@ -86,7 +86,7 @@ describe('EmployeeForm Integration Tests', () => {
     await addComponent.updateComplete
     
     const addTitle = addComponent.shadowRoot.querySelector('h2')
-    expect(addTitle.textContent).toBe('Add Employee')
+    expect(addTitle.textContent.trim()).toBe('Add Employee')
     
     // Create a new container for edit mode to avoid Lit rendering conflicts
     const editContainer = document.createElement('div')
@@ -99,7 +99,7 @@ describe('EmployeeForm Integration Tests', () => {
     await editComponent.updateComplete
     
     const editTitle = editComponent.shadowRoot.querySelector('h2')
-    expect(editTitle.textContent).toBe('Edit Employee')
+    expect(editTitle.textContent.trim()).toBe('Edit Employee: John Doe')
     
     // Clean up
     document.body.removeChild(editContainer)

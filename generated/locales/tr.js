@@ -38,6 +38,7 @@
 'sb85774dc5d18ff0f': `Onayla`,
 'sc1611c0558728a2a': `Pozisyon`,
 'sc485ed452796ab62': `İşe Başlama Tarihi:`,
+'scba00271d50c74f6': `Çalışanlar`,
 'sd014b6fddbaf31c7': `Departman:`,
 'sd1f44f1a8bc20e67': `E-posta`,
 'sdc673e73b5c13aea': `Sil`,
