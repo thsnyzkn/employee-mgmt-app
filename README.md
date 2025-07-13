@@ -2,6 +2,12 @@
 
 A modern web application for managing employee data built with Lit and Vite.
 
+## Live Demo
+
+[View Live Application](https://loquacious-meerkat-89157d.netlify.app/)
+
+*Update this URL after deploying to Netlify*
+
 ## Features
 
 - Add, edit, and delete employees
