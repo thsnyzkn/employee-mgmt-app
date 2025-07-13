@@ -1,8 +1,6 @@
 import { html, LitElement, css } from "lit";
 import { Router } from "@vaadin/router";
 import { propertyTypes } from "../../utils/constants";
-import editIcon from "../assets/edit.svg";
-import deleteIcon from "../assets/delete.svg";
 
 class TableView extends LitElement {
   static properties = {
@@ -99,14 +97,30 @@ class TableView extends LitElement {
     button {
       padding: 6px;
       cursor: pointer;
-      background: transparent;
-      border: 1px solid #ddd;
+      border: 1px solid #ff6200;
       border-radius: 4px;
       transition: all 0.2s;
       display: flex;
       align-items: center;
       justify-content: center;
+    }
+    
+    button.primary {
+      background-color: #ff6200;
+      color: white;
+    }
+    
+    button.primary:hover {
+      background-color: #e55a00;
+    }
+    
+    button.secondary {
+      background-color: white;
       color: #ff6200;
+    }
+    
+    button.secondary:hover {
+      background-color: #f8f9fa;
     }
 
     @media (min-width: 768px) {
@@ -114,20 +128,15 @@ class TableView extends LitElement {
         padding: 8px;
       }
     }
-
-    button:hover {
-      background-color: #f0f0f0;
-      border-color: #999;
-    }
-
-    button img {
-      width: 24px;
-      height: 24px;
+    
+    button svg {
+      width: 18px;
+      height: 18px;
       vertical-align: middle;
     }
-
+    
     @media (min-width: 768px) {
-      button img {
+      button svg {
         width: 20px;
         height: 20px;
       }
@@ -238,11 +247,21 @@ class TableView extends LitElement {
                 <td>${employee.department}</td>
                 <td>${employee.position}</td>
                 <td>
-                  <button @click=${() => Router.go(`/edit/${employee.id}`)}>
-                    ${html`<img src="${editIcon}" alt="Edit" />`}
+                  <button class="primary" @click=${() => Router.go(`/edit/${employee.id}`)}>
+                    <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24">
+                      <g fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2">
+                        <path d="M7 7H6a2 2 0 0 0-2 2v9a2 2 0 0 0 2 2h9a2 2 0 0 0 2-2v-1"/>
+                        <path d="M20.385 6.585a2.1 2.1 0 0 0-2.97-2.97L9 12v3h3l8.385-8.415zM16 5l3 3"/>
+                      </g>
+                    </svg>
                   </button>
-                  <button @click=${() => this.deleteEmployee(employee.id)}>
-                    ${html`<img src="${deleteIcon}" alt="Delete" />`}
+                  <button class="secondary" @click=${() => this.deleteEmployee(employee.id)}>
+                    <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24">
+                      <g fill="none" fill-rule="evenodd">
+                        <path d="M24 0v24H0V0h24ZM12.594 23.258l-.012.002l-.071.035l-.02.004l-.014-.004l-.071-.036c-.01-.003-.019 0-.024.006l-.004.01l-.017.428l.005.02l.01.013l.104.074l.015.004l.012-.004l.104-.074l.012-.016l.004-.017l-.017-.427c-.002-.01-.009-.017-.016-.018Zm.264-.113l-.014.002l-.184.093l-.01.01l-.003.011l.018.43l.005.012l.008.008l.201.092c.012.004.023 0 .029-.008l.004-.014l-.034-.614c-.003-.012-.01-.02-.02-.022Zm-.715.002a.023.023 0 0 0-.027.006l-.006.014l-.034.614c0 .012.007.02.017.024l.015-.002l.201-.093l.01-.008l.003-.011l.018-.43l-.003-.012l-.01-.01l-.184-.092Z"/>
+                        <path fill="currentColor" d="M7.823 3.368A2 2 0 0 1 9.721 2h4.558a2 2 0 0 1 1.898 1.368L16.72 5H20a1 1 0 1 1 0 2h-1v12a3 3 0 0 1-3 3H8a3 3 0 0 1-3-3V7H4a1 1 0 0 1 0-2h3.28l.543-1.632ZM9.387 5l.334-1h4.558l.334 1H9.387Z"/>
+                      </g>
+                    </svg>
                   </button>
                 </td>
               </tr>

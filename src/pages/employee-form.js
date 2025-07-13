@@ -193,35 +193,22 @@ class EmployeeForm extends LitElement {
     }
     
     button.submit {
-      background-color: #4caf50;
+      background-color: #ff6200;
       color: white;
-      order: 1;
     }
-    
+
     button.submit:hover {
-      background-color: #45a049;
-      transform: translateY(-1px);
+      background-color: #e55a00;
     }
-    
+
     button.cancel {
-      background-color: #f44336;
-      color: white;
-      order: 2;
+      background-color: white;
+      color: #ff6200;
+      border: 1px solid #ff6200;
     }
-    
-    @media (min-width: 600px) {
-      button.cancel {
-        order: 1;
-      }
-      
-      button.submit {
-        order: 2;
-      }
-    }
-    
+
     button.cancel:hover {
-      background-color: #da190b;
-      transform: translateY(-1px);
+      background-color: #f8f9fa;
     }
     
     button:active {
