@@ -1,6 +1,11 @@
 import { html, LitElement, css } from "lit";
+import { msg, updateWhenLocaleChanges } from "@lit/localize";
 
 class ConfirmModal extends LitElement {
+  constructor() {
+    super();
+    updateWhenLocaleChanges(this);
+  }
   static styles = css`
     .modal-overlay {
       position: fixed;
@@ -13,7 +18,7 @@ class ConfirmModal extends LitElement {
       justify-content: center;
       align-items: center;
     }
-    
+
     .modal-content {
       background-color: white;
       padding: 24px;
@@ -23,14 +28,14 @@ class ConfirmModal extends LitElement {
       max-width: 90vw;
       min-width: 320px;
     }
-    
+
     @media (min-width: 480px) {
       .modal-content {
         padding: 32px;
         min-width: 400px;
       }
     }
-    
+
     .modal-title {
       margin: 0 0 16px 0;
       font-size: 20px;
@@ -38,34 +43,34 @@ class ConfirmModal extends LitElement {
       color: #333;
       line-height: 1.3;
     }
-    
+
     @media (min-width: 480px) {
       .modal-title {
         font-size: 24px;
         margin-bottom: 20px;
       }
     }
-    
+
     .modal-content p {
       margin: 0 0 24px 0;
       font-size: 16px;
       color: #333;
       line-height: 1.5;
     }
-    
+
     @media (min-width: 480px) {
       .modal-content p {
         font-size: 18px;
         margin-bottom: 32px;
       }
     }
-    
+
     .modal-actions {
       display: flex;
       flex-direction: column;
       gap: 12px;
     }
-    
+
     @media (min-width: 480px) {
       .modal-actions {
         flex-direction: row;
@@ -73,7 +78,7 @@ class ConfirmModal extends LitElement {
         gap: 16px;
       }
     }
-    
+
     button {
       padding: 14px 24px;
       border: none;
@@ -85,7 +90,7 @@ class ConfirmModal extends LitElement {
       min-height: 48px;
       flex: 1;
     }
-    
+
     @media (min-width: 480px) {
       button {
         flex: 0 1 auto;
@@ -93,26 +98,26 @@ class ConfirmModal extends LitElement {
         padding: 12px 24px;
       }
     }
-    
+
     button.confirm {
       background-color: #ff6200;
       color: white;
     }
-    
+
     button.confirm:hover {
       background-color: #e55a00;
     }
-    
+
     button.cancel {
       background-color: white;
       color: #ff6200;
       border: 1px solid #ff6200;
     }
-    
+
     button.cancel:hover {
       background-color: #f8f9fa;
     }
-    
+
     button:active {
       transform: translateY(0);
     }
@@ -129,11 +134,15 @@ class ConfirmModal extends LitElement {
     return html`
       <div class="modal-overlay">
         <div class="modal-content">
-          ${this.title ? html`<h3 class="modal-title">${this.title}</h3>` : ''}
+          ${this.title ? html`<h3 class="modal-title">${this.title}</h3>` : ""}
           <p>${this.message}</p>
           <div class="modal-actions">
-            <button class="confirm" @click=${this.onConfirm}>Confirm</button>
-            <button class="cancel" @click=${this.onCancel}>Cancel</button>
+            <button class="confirm" @click=${this.onConfirm}>
+              ${msg("Confirm")}
+            </button>
+            <button class="cancel" @click=${this.onCancel}>
+              ${msg("Cancel")}
+            </button>
           </div>
         </div>
       </div>

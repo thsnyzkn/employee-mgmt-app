@@ -1,5 +1,6 @@
 import { html, LitElement, css } from "lit";
 import { Router } from "@vaadin/router";
+import { msg, str, updateWhenLocaleChanges } from "@lit/localize";
 import { store, addEmployee, updateEmployee } from "../store";
 
 class EmployeeForm extends LitElement {
@@ -13,7 +14,7 @@ class EmployeeForm extends LitElement {
       display: block;
       padding: 16px;
     }
-    
+
     .form-container {
       max-width: 100%;
       margin: 0 auto;
@@ -23,7 +24,7 @@ class EmployeeForm extends LitElement {
       box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
       background-color: white;
     }
-    
+
     @media (min-width: 768px) {
       .form-container {
         max-width: 800px;
@@ -31,7 +32,7 @@ class EmployeeForm extends LitElement {
         padding: 32px;
       }
     }
-    
+
     @media (min-width: 1024px) {
       .form-container {
         max-width: 1000px;
@@ -39,14 +40,14 @@ class EmployeeForm extends LitElement {
         padding: 40px;
       }
     }
-    
+
     h2 {
       margin: 0 0 24px 0;
       color: #333;
       font-size: 24px;
       text-align: center;
     }
-    
+
     @media (min-width: 768px) {
       h2 {
         font-size: 28px;
@@ -54,21 +55,21 @@ class EmployeeForm extends LitElement {
         margin-bottom: 32px;
       }
     }
-    
+
     .form-grid {
       display: grid;
       grid-template-columns: 1fr;
       gap: 20px;
       margin-bottom: 24px;
     }
-    
+
     @media (min-width: 600px) {
       .form-grid {
         grid-template-columns: repeat(2, 1fr);
         gap: 24px;
       }
     }
-    
+
     @media (min-width: 1024px) {
       .form-grid {
         grid-template-columns: repeat(3, 1fr);
@@ -76,12 +77,12 @@ class EmployeeForm extends LitElement {
         margin-bottom: 32px;
       }
     }
-    
+
     .form-group {
       display: flex;
       flex-direction: column;
     }
-    
+
     label {
       display: block;
       margin-bottom: 8px;
@@ -89,14 +90,14 @@ class EmployeeForm extends LitElement {
       color: #333;
       font-size: 14px;
     }
-    
+
     @media (min-width: 768px) {
       label {
         font-size: 15px;
         margin-bottom: 10px;
       }
     }
-    
+
     input[type="text"],
     input[type="email"],
     input[type="date"],
@@ -111,7 +112,7 @@ class EmployeeForm extends LitElement {
       transition: border-color 0.2s, box-shadow 0.2s;
       background-color: white;
     }
-    
+
     @media (min-width: 768px) {
       input[type="text"],
       input[type="email"],
@@ -122,7 +123,7 @@ class EmployeeForm extends LitElement {
         font-size: 16px;
       }
     }
-    
+
     input[type="text"]:focus,
     input[type="email"]:focus,
     input[type="date"]:focus,
@@ -132,7 +133,7 @@ class EmployeeForm extends LitElement {
       border-color: #ff6200;
       box-shadow: 0 0 0 3px rgba(255, 98, 0, 0.1);
     }
-    
+
     select {
       cursor: pointer;
       appearance: none;
@@ -142,14 +143,14 @@ class EmployeeForm extends LitElement {
       background-size: 20px;
       padding-right: 40px;
     }
-    
+
     .form-actions {
       display: flex;
       flex-direction: column;
       gap: 12px;
       margin-top: 24px;
     }
-    
+
     @media (min-width: 600px) {
       .form-actions {
         flex-direction: row;
@@ -157,14 +158,14 @@ class EmployeeForm extends LitElement {
         gap: 16px;
       }
     }
-    
+
     @media (min-width: 768px) {
       .form-actions {
         justify-content: flex-end;
         margin-top: 32px;
       }
     }
-    
+
     button {
       padding: 14px 24px;
       border: none;
@@ -176,7 +177,7 @@ class EmployeeForm extends LitElement {
       min-height: 48px;
       flex: 1;
     }
-    
+
     @media (min-width: 600px) {
       button {
         flex: 0 1 auto;
@@ -184,14 +185,14 @@ class EmployeeForm extends LitElement {
         padding: 12px 32px;
       }
     }
-    
+
     @media (min-width: 768px) {
       button {
         min-width: 160px;
         padding: 14px 40px;
       }
     }
-    
+
     button.submit {
       background-color: #ff6200;
       color: white;
@@ -210,7 +211,7 @@ class EmployeeForm extends LitElement {
     button.cancel:hover {
       background-color: #f8f9fa;
     }
-    
+
     button:active {
       transform: translateY(0);
     }
@@ -228,6 +229,7 @@ class EmployeeForm extends LitElement {
       department: "",
       position: "",
     };
+    updateWhenLocaleChanges(this);
   }
 
   connectedCallback() {
@@ -261,7 +263,7 @@ class EmployeeForm extends LitElement {
     if (changedProperties.has("employeeId")) {
       this._loadEmployee();
     }
-    
+
     if (
       changedProperties.has("employee") ||
       changedProperties.has("employeeId")
@@ -302,11 +304,17 @@ class EmployeeForm extends LitElement {
   render() {
     return html`
       <div class="form-container">
-        <h2>${this.employeeId ? `Edit Employee: ${this.employee.firstName} ${this.employee.lastName}` : "Add Employee"}</h2>
+        <h2>
+          ${this.employeeId
+            ? msg(
+                str`Edit Employee: ${this.employee.firstName} ${this.employee.lastName}`
+              )
+            : msg("Add Employee")}
+        </h2>
         <form @submit=${this._handleSubmit}>
           <div class="form-grid">
             <div class="form-group">
-              <label for="firstName">First Name:</label>
+              <label for="firstName">${msg("First Name:")}</label>
               <input
                 type="text"
                 id="firstName"
@@ -316,7 +324,7 @@ class EmployeeForm extends LitElement {
               />
             </div>
             <div class="form-group">
-              <label for="lastName">Last Name:</label>
+              <label for="lastName">${msg("Last Name:")}</label>
               <input
                 type="text"
                 id="lastName"
@@ -326,7 +334,9 @@ class EmployeeForm extends LitElement {
               />
             </div>
             <div class="form-group">
-              <label for="dateOfEmployment">Date of Employment:</label>
+              <label for="dateOfEmployment"
+                >${msg("Date of Employment:")}</label
+              >
               <input
                 type="date"
                 id="dateOfEmployment"
@@ -336,7 +346,7 @@ class EmployeeForm extends LitElement {
               />
             </div>
             <div class="form-group">
-              <label for="dateOfBirth">Date of Birth:</label>
+              <label for="dateOfBirth">${msg("Date of Birth:")}</label>
               <input
                 type="date"
                 id="dateOfBirth"
@@ -346,7 +356,7 @@ class EmployeeForm extends LitElement {
               />
             </div>
             <div class="form-group">
-              <label for="phone">Phone:</label>
+              <label for="phone">${msg("Phone:")}</label>
               <input
                 type="tel"
                 id="phone"
@@ -356,7 +366,7 @@ class EmployeeForm extends LitElement {
               />
             </div>
             <div class="form-group">
-              <label for="email">Email:</label>
+              <label for="email">${msg("Email:")}</label>
               <input
                 type="email"
                 id="email"
@@ -366,37 +376,70 @@ class EmployeeForm extends LitElement {
               />
             </div>
             <div class="form-group">
-              <label for="department">Department:</label>
+              <label for="department">${msg("Department:")}</label>
               <select
                 id="department"
                 name="department"
                 .value=${this.employee.department || ""}
                 required
               >
-                <option value="" disabled ?selected=${!this.employee.department}>Please Select</option>
-                <option value="Analytics" ?selected=${this.employee.department === 'Analytics'}>Analytics</option>
-                <option value="Tech" ?selected=${this.employee.department === 'Tech'}>Tech</option>
+                <option
+                  value=""
+                  disabled
+                  ?selected=${!this.employee.department}
+                >
+                  ${msg("Please Select")}
+                </option>
+                <option
+                  value="Analytics"
+                  ?selected=${this.employee.department === "Analytics"}
+                >
+                  ${msg("Analytics")}
+                </option>
+                <option
+                  value="Tech"
+                  ?selected=${this.employee.department === "Tech"}
+                >
+                  ${msg("Tech")}
+                </option>
               </select>
             </div>
             <div class="form-group">
-              <label for="position">Position:</label>
+              <label for="position">${msg("Position:")}</label>
               <select
                 id="position"
                 name="position"
                 .value=${this.employee.position || ""}
                 required
               >
-                <option value="" disabled ?selected=${!this.employee.position}>Please Select</option>
-                <option value="Junior" ?selected=${this.employee.position === 'Junior'}>Junior</option>
-                <option value="Medior" ?selected=${this.employee.position === 'Medior'}>Medior</option>
-                <option value="Senior" ?selected=${this.employee.position === 'Senior'}>Senior</option>
+                <option value="" disabled ?selected=${!this.employee.position}>
+                  ${msg("Please Select")}
+                </option>
+                <option
+                  value="Junior"
+                  ?selected=${this.employee.position === "Junior"}
+                >
+                  ${msg("Junior")}
+                </option>
+                <option
+                  value="Medior"
+                  ?selected=${this.employee.position === "Medior"}
+                >
+                  ${msg("Medior")}
+                </option>
+                <option
+                  value="Senior"
+                  ?selected=${this.employee.position === "Senior"}
+                >
+                  ${msg("Senior")}
+                </option>
               </select>
             </div>
           </div>
           <div class="form-actions">
-            <button type="submit" class="submit">Save</button>
+            <button type="submit" class="submit">${msg("Save")}</button>
             <button type="button" class="cancel" @click=${this._handleCancel}>
-              Cancel
+              ${msg("Cancel")}
             </button>
           </div>
         </form>

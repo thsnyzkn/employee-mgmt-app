@@ -1,7 +1,8 @@
 import { html, LitElement, css } from "lit";
 import { Router } from "@vaadin/router";
+import { msg, updateWhenLocaleChanges } from "@lit/localize";
 import "./card-property";
-import { propertyTypes } from "../../utils/constants";
+import { propertyTypesOriginal, getTranslatedPropertyType } from "../../utils/constants";
 import editIcon from "../assets/edit.svg";
 import deleteIcon from "../assets/delete.svg";
 
@@ -9,6 +10,11 @@ class ListView extends LitElement {
   static properties = {
     employees: { type: Array },
   };
+
+  constructor() {
+    super();
+    updateWhenLocaleChanges(this);
+  }
   static styles = css`
     :host {
       display: block;
@@ -184,19 +190,19 @@ class ListView extends LitElement {
         ${this.employees?.map(
           (employee) => html`
             <li>
-              ${propertyTypes
+              ${propertyTypesOriginal
                 .filter((property) => property !== "Actions")
                 .map(
                   (property) => html`
                     <card-property
                       .title=${this.getEmployeeValue(employee, property)}
-                      .label=${property}
+                      .label=${getTranslatedPropertyType(property)}
                     ></card-property>
                   `
                 )}
               <div class="actions-container">
                 <button @click=${() => Router.go(`/edit/${employee.id}`)}>
-                  ${html`<img src="${editIcon}" alt="Edit" />`} Edit
+                  ${html`<img src="${editIcon}" alt="Edit" />`} ${msg("Edit")}
                 </button>
                 <button
                   @click=${() =>
@@ -208,7 +214,8 @@ class ListView extends LitElement {
                       })
                     )}
                 >
-                  ${html`<img src="${deleteIcon}" alt="Delete" />`} Delete
+                  ${html`<img src="${deleteIcon}" alt="Delete" />`}
+                  ${msg("Delete")}
                 </button>
               </div>
             </li>

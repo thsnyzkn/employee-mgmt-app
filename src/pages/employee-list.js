@@ -1,4 +1,5 @@
 import { html, LitElement, css } from "lit";
+import { msg, str, updateWhenLocaleChanges } from "@lit/localize";
 import { store, deleteSelectedEmployees, deleteEmployee } from "../store";
 import "../components/table-view";
 import "../components/list-view";
@@ -234,6 +235,7 @@ class EmployeeList extends LitElement {
     this.modalMessage = "";
     this.modalTitle = "";
     this.confirmAction = () => {};
+    updateWhenLocaleChanges(this);
   }
 
   handleSelectionChanged(e) {
@@ -241,8 +243,9 @@ class EmployeeList extends LitElement {
   }
 
   deleteSelected() {
-    this.modalMessage =
-      "Are you sure you want to delete the selected employees?";
+    this.modalMessage = msg(
+      "Are you sure you want to delete the selected employees?"
+    );
     this.confirmAction = () => {
       store.dispatch(deleteSelectedEmployees(this.selectedEmployeeIds));
       this.selectedEmployeeIds = [];
@@ -253,8 +256,10 @@ class EmployeeList extends LitElement {
 
   deleteSingleEmployee(employeeId) {
     const employee = this.employees.find((emp) => emp.id === employeeId);
-    this.modalTitle = `Confirm Delete ${employee.firstName} ${employee.lastName}`;
-    this.modalMessage = "Are you sure you want to delete this employee?";
+    this.modalTitle = msg(
+      str`Confirm Delete ${employee.firstName} ${employee.lastName}`
+    );
+    this.modalMessage = msg("Are you sure you want to delete this employee?");
     this.confirmAction = () => {
       store.dispatch(deleteEmployee(employeeId));
       this.isModalVisible = false;
@@ -327,14 +332,14 @@ class EmployeeList extends LitElement {
           `
         : ""}
       <section>
-        <h2>Employee List</h2>
+        <h2>${msg("Employee List")}</h2>
         <div class="search-container">
           <input
             class="search-input"
             type="text"
             .value=${this.searchQuery}
             @input=${this.updateSearch}
-            placeholder="Search by name, department, or position..."
+            placeholder="${msg("Search by name, department, or position...")}"
           />
         </div>
         <div class="button-wrapper">

@@ -1,6 +1,6 @@
 import { LitElement, html, css } from "lit";
 import { Router } from "@vaadin/router";
-import { msg } from "@lit/localize";
+import { msg, updateWhenLocaleChanges } from "@lit/localize";
 
 import logo from "./assets/logo.svg";
 import "./components/language-dropdown.js";

@@ -1,10 +1,16 @@
 import { LitElement, html, css } from "lit";
+import { msg, updateWhenLocaleChanges } from "@lit/localize";
 
 class CardProperty extends LitElement {
   static properties = {
     label: { type: String },
     title: { type: String },
   };
+
+  constructor() {
+    super();
+    updateWhenLocaleChanges(this);
+  }
 
   static styles = css`
     #wrapper {
