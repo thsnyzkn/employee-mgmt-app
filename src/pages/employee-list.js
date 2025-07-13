@@ -171,7 +171,7 @@ class EmployeeList extends LitElement {
       align-items: center;
       gap: 4px;
       background-color: transparent;
-      border: 1px solid #ddd;
+      border: none;
       padding: 8px 12px;
       border-radius: 6px;
       transition: all 0.2s;
@@ -188,7 +188,6 @@ class EmployeeList extends LitElement {
 
     button:hover:not(:disabled) {
       background-color: #f5f5f5;
-      border-color: #999;
     }
 
     button:disabled {
@@ -313,10 +312,6 @@ class EmployeeList extends LitElement {
   }
 
   render() {
-    const employeesToShow = this.searchQuery
-      ? this.paginatedEmployees
-      : this.employees;
-
     return html`
       ${this.isModalVisible
         ? html`

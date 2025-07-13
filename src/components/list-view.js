@@ -110,6 +110,7 @@ class ListView extends LitElement {
       flex: 1;
       min-width: 0;
       white-space: nowrap;
+      color: white;
     }
 
     @media (min-width: 480px) {
@@ -127,33 +128,24 @@ class ListView extends LitElement {
     }
 
     .actions-container button:first-of-type {
-      background-color: #4caf50;
-      color: white;
-      border-color: #4caf50;
-    }
-
-    .actions-container button:first-of-type:hover {
-      background-color: #45a049;
-      border-color: #45a049;
+      background-color: #ff6200;
+      border-color: #ff6200;
     }
 
     .actions-container button:last-of-type {
-      background-color: #f44336;
-      color: white;
-      border-color: #f44336;
-    }
-
-    .actions-container button:last-of-type:hover {
-      background-color: #da190b;
-      border-color: #da190b;
+      background-color: #172b53;
+      border-color: #172b53;
     }
 
     .actions-container button img {
       width: 16px;
       height: 16px;
       vertical-align: middle;
-      filter: brightness(0) invert(1);
       flex-shrink: 0;
+    }
+
+    .actions-container button img {
+      filter: brightness(0) invert(1);
     }
 
     @media (min-width: 768px) {
