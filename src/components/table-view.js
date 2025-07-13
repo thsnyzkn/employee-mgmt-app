@@ -1,5 +1,6 @@
 import { html, LitElement, css } from "lit";
 import { Router } from "@vaadin/router";
+import { msg, updateWhenLocaleChanges } from "@lit/localize";
 import { propertyTypes } from "../../utils/constants";
 import editIcon from "../assets/edit.svg";
 import deleteIcon from "../assets/delete.svg";
@@ -166,6 +167,7 @@ class TableView extends LitElement {
   constructor() {
     super();
     this.selectedEmployees = new Set();
+    updateWhenLocaleChanges(this);
   }
 
   handleMasterCheckboxChange(e) {
@@ -221,7 +223,7 @@ class TableView extends LitElement {
                 @change=${this.handleMasterCheckboxChange}
               />
             </th>
-            ${propertyTypes.map((property) => html`<th>${property}</th>`)}
+            ${propertyTypes.map((property) => html`<th>${msg(property)}</th>`) }
           </tr>
         </thead>
         <tbody>
